@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let email = localStorage.getItem('email');  // Assuming email is stored in localStorage after login
     let apiCounter = localStorage.getItem('apiCounter'); // Similarly, the API counter value is stored
 
+    
     if (email && apiCounter !== null) {
         // Populate the data on the page
         document.getElementById('userEmail').textContent = email;
