@@ -31,13 +31,16 @@
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       xhr.onreadystatechange = function () {
+        console.log(xhr.readyState);
+        console.log(xhr.status);
+        console.log(xhr.responseText);
         if (xhr.readyState === XMLHttpRequest.DONE) {
             console.log(xhr.responseText);
           if (xhr.status === 200) {
             status.innerText = 'Password updated successfully!';
             window.location.href = 'login.html';
           } else {
-            console.log(xhr.responseText.error);
+            console.log(xhr.responseText);
             
             status.innerText = 'Error updating password.';
           }
