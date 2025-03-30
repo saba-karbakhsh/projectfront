@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if(response.toLowerCase().includes("login success")){
                             const xhr2 = new XMLHttpRequest();
                             xhr2.withCredentials = true; // Include credentials in the request
-                            xhr2.open("GET", "http://localhost:8080/index", true); // Adjust the URL as needed
+                            xhr2.open("GET", "https://lionfish-app-kaw6i.ondigitalocean.app/index", true); // Adjust the URL as needed
                             xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                             
                             xhr2.onreadystatechange = function () {
