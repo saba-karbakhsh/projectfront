@@ -20,7 +20,7 @@
         <!-- Welcome Message and API Counter -->
         <div class="text-center">
             <h3>Welcome, <span id="userEmail">User</span>!</h3>
-            <p>You have <strong id="apiCounter"></strong> API calls remaining.</p>
+            <p>You have <strong id="apiCounter">0</strong> API calls remaining.</p>
         </div>
 
         <!-- Video Feed and Controls -->
@@ -94,54 +94,6 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://localhost:8080/index", true);
-            xhr.withCredentials = true;
-        
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        try {
-                            const data = JSON.parse(xhr.responseText);
-        
-                            console.log("Response data:", data);
-                            if (data.error) {
-                                alert(data.error);
-                                window.location.href = "login.html";
-                                return;
-                            }
-        
-                            document.getElementById("userEmail").textContent = data.email;
-                            document.getElementById("role").textContent = data.role;
-        
-                            if (data.role === "admin") {
-                                console.log("All users:", data.usersData);
-                            } else {
-                                document.getElementById("apiCounter").textContent = data;
-                            }
-        
-                        } catch (err) {
-                            console.error("Invalid response:", err);
-                            window.location.href = "login.html";
-                        }
-                    } else {
-                        alert("Session error. Please log in again.");
-                        window.location.href = "login.html";
-                    }
-                }
-            };
-        
-            xhr.send();
-        
-            document.getElementById("logoutBtn").addEventListener("click", function () {
-                localStorage.clear();
-                window.location.href = "login.html";
-            });
-        });
-        </script>
-        
-    <!-- <script src="index.js"></script> -->
+    <script src="index.js"></script>
 </body>
 </html>
