@@ -9,11 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
             showMessage(messages.emptyFields, "danger");
             return;
         }
-
+        let userId = localStorage.getItem("userID"); // Retrieve userID from localStorage
         let xhr = new XMLHttpRequest();
         xhr.withCredentials = true; // Include credentials in the request
-        xhr.open("POST", "https://lionfish-app-kaw6i.ondigitalocean.app/login", true); // Adjust the URL as needed
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.open("POST", "https://lionfish-app-kaw6i.ondigitalocean.app/api/v1/login?userID=" + userId, true); // Adjust the URL as needed
+        xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -21,23 +21,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (xhr.status === 200) {
                     let response = xhr.responseText.trim();
-
-
-                    if (response.toLowerCase().includes("user not found")) {
+                    response = JSON.parse(response);
+                    console.log("Response:", response.message); // Check the entire userData object
+                    if (response.message.toLowerCase().includes("user not found")) {
                         showMessage(messages.invalidCredentials, "danger");
                     } else {
 
-                        let userData = JSON.parse(response);
-                        userId = userData.userID; // Assuming userID is part of the response
-                        message = userData.message; // Assuming messages is part of the response
-                        if (message.toLowerCase().includes("login successful")) {
-                            console.log("User Data:", userData); // Check the entire userData object
                             const xhr2 = new XMLHttpRequest();
                             xhr2.withCredentials = true; // Include credentials in the request
-                            xhr2.open("GET", "https://lionfish-app-kaw6i.ondigitalocean.app/user/" + userId, true); // Adjust the URL as needed
-                            xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            xhr2.open("GET", "https://lionfish-app-kaw6i.ondigitalocean.app/api/v1/index?userID=" + userId, true); // Adjust the URL as needed
+                            xhr2.setRequestHeader("Content-Type", "application/json");
                             xhr2.onreadystatechange = function () {
                                 if (xhr2.readyState === 4) {
+                                    if(xhr.responseText.includes("API limit reached")) {
+                                        alert("API limit reached. Please try again later.");
+                                    }
                                     console.log("Response:", xhr2.responseText);
                                     if (xhr2.status === 200) {
                                         let response = xhr2.responseText.trim();
@@ -46,14 +44,15 @@ document.addEventListener("DOMContentLoaded", function () {
                                         localStorage.setItem("email", response.email);
                                         localStorage.setItem("role", response.role);
                                         localStorage.setItem("apiCounter", response.apiCounter);
+                                        localStorage.setItem("userID", response.userID); // Store userID in localStorage
                                         localStorage.setItem("usersData", JSON.stringify(response.usersData));
-                                        // if (userData.role === "admin") {
-
-                                        //     localStorage.setItem("usersData", JSON.stringify(userData.usersData));
-                                        // }
-
-                                        // let redirectPage = userData.role === "admin" ? "admin.html" : "index.html";
-                                        // window.location.href = redirectPage;
+                                        localStorage.setItem("putCounter", response.putCounter);
+                                        localStorage.setItem("deleteCounter", response.deleteCounter);
+                                        localStorage.setItem("getCounter", response.getCounter);
+                                        localStorage.setItem("postCounter", response.postCounter);
+                                
+                                        let redirectPage = response.role === "admin" ? "admin.html" : "index.html";
+                                        window.location.href = redirectPage;
                                     }
                                 }
                             };
@@ -65,11 +64,49 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     showMessage(messages.serverError, "danger");
                 }
-            }
+            
         };
 
 
         let data = JSON.stringify({ email: email, password: password });
+        xhr.send(data);
+    });
+
+    document.getElementById("resetpass").addEventListener("click", function () {
+       document.getElementById("resetPassword").style.display = "block";
+        
+    });
+    document.getElementById("submit").addEventListener("click", function () {
+        let email = document.getElementById("resetEmail").value.trim();
+        console.log("Email:", email); // Log the email value for debugging
+        if (!email) {
+            showMessage(messages.emptyFields, "danger");
+            return;
+        }
+
+        let xhr = new XMLHttpRequest();
+        xhr.withCredentials = true; // Include credentials in the request
+        xhr.open("PUT", "https://lionfish-app-kaw6i.ondigitalocean.app/api/v1/resetPassword?userID=" + localStorage.getItem("userID"), true); // Adjust the URL as needed
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log("Response:", xhr.responseText);
+                if(xhr.responseText.includes("API limit reached")) {
+                    alert("API limit reached. Please try again later.");
+                }
+                if (xhr.status === 200) {
+                    console.log("Response:", xhr.responseText);
+                    window.location.href = "login.html"; // Redirect to login page after successful reset
+                    showMessage(messages.resetSuccess, "success");
+
+                } else {
+                    showMessage(messages.resetError, "danger");
+                }
+            }
+        };
+
+        let data = JSON.stringify({ email: email });
         xhr.send(data);
     });
 });
