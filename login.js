@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (xhr.status === 200) {
                     let response = xhr.responseText.trim();
                     response = JSON.parse(response);
+                    console.log("Response:", response); // Check the entire response object
                     if (response.message.toLowerCase().includes("user not found")) {
                         showMessage(messages.invalidCredentials, "danger");
                     } else {
