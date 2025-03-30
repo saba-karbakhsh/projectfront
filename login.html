@@ -51,11 +51,10 @@
                         const response = xhr.responseText.trim();
         
                         if (xhr.status === 200) {
+                            console.log("Login successful:", response);
+                                window.location.href = "index.html";
                             if (response.toLowerCase().includes("user not found")) {
                                 showMessage("Invalid email or password.", "danger");
-                            } else if (response.toLowerCase().includes("login successful")) {
-                                console.log("Login successful:", response);
-                                window.location.href = "index.html";
                             } else {
                                 showMessage("Login error: " + response, "danger");
                             }
