@@ -22,8 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (xhr.status === 200) {
                     let response = xhr.responseText.trim();
                     response = JSON.parse(response);
-                    console.log("Response:", response); // Check the entire response object
-                    if (response.error.toLowerCase().includes("user not found")) {
+                    console.log("Response:", response.error); // Check the entire response object
+                    if (response.error) {
+                        if(response.error.toLowerCase().includes("user not found"))
                         showMessage(messages.invalidCredentials, "danger");
                     } else {
 
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     if (xhr2.status === 200) {
                                         let response = xhr2.responseText.trim();
                                         response = JSON.parse(response);
-                                        console.log("User Data:", response); // Check the entire userData object
+                                        console.log("User Data:", response.error); // Check the entire userData object
                                         localStorage.setItem("email", response.email);
                                         localStorage.setItem("role", response.role);
                                         localStorage.setItem("apiCounter", response.apiCounter);
