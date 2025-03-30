@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     if (xhr2.status === 200) {
                                         let response = xhr2.responseText.trim();
                                         response = JSON.parse(response);
-                                        // console.log("User Data:", response); // Check the entire userData object
+                                        console.log("User Data:", response); // Check the entire userData object
                                         localStorage.setItem("email", response.email);
                                         localStorage.setItem("role", response.role);
                                         localStorage.setItem("apiCounter", response.apiCounter);
