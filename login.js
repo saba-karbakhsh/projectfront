@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let xhr = new XMLHttpRequest();
         xhr.withCredentials = true; // Include credentials in the request
-        xhr.open("POST", "http://localhost:8080/login", true); // Adjust the URL as needed
+        xhr.open("POST", "https://lionfish-app-kaw6i.ondigitalocean.app/login", true); // Adjust the URL as needed
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         xhr.onreadystatechange = function () {

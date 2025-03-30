@@ -27,7 +27,7 @@ document.getElementById("signupForm").addEventListener("submit", function(event)
         let userData = { email: email, password: password };
 
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8080/signup', true);
+        xhr.open('POST', 'https://lionfish-app-kaw6i.ondigitalocean.app/signup', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         // Set up the callback function for the response
