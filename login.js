@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     let response = xhr.responseText.trim();
                     response = JSON.parse(response);
                     console.log("Response:", response); // Check the entire response object
-                    if (response.message.toLowerCase().includes("user not found")) {
+                    if (response.error.toLowerCase().includes("user not found")) {
                         showMessage(messages.invalidCredentials, "danger");
                     } else {
 
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     }
                 } else {
+                    console.error("Error:", xhr.status, xhr.statusText);
                     showMessage(messages.serverError, "danger");
                 }
             
