@@ -9,20 +9,19 @@ document.addEventListener("DOMContentLoaded", function () {
             showMessage(messages.emptyFields, "danger");
             return;
         }
-        let userId = localStorage.getItem("userID"); // Retrieve userID from localStorage
+        let userId = localStorage.getItem("userID") || 0;
         let xhr = new XMLHttpRequest();
         xhr.withCredentials = true; // Include credentials in the request
+        console.log("User ID:", userId); // Check the userID being used for login
         xhr.open("POST", "https://lionfish-app-kaw6i.ondigitalocean.app/api/v1/login?userID=" + userId, true); // Adjust the URL as needed
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
-                console.log("Response:", xhr.responseText);
 
                 if (xhr.status === 200) {
                     let response = xhr.responseText.trim();
                     response = JSON.parse(response);
-                    console.log("Response:", response.message); // Check the entire userData object
                     if (response.message.toLowerCase().includes("user not found")) {
                         showMessage(messages.invalidCredentials, "danger");
                     } else {
@@ -36,11 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                     if(xhr.responseText.includes("API limit reached")) {
                                         alert("API limit reached. Please try again later.");
                                     }
-                                    console.log("Response:", xhr2.responseText);
+                                    // console.log("Response:", xhr2.responseText);
                                     if (xhr2.status === 200) {
                                         let response = xhr2.responseText.trim();
                                         response = JSON.parse(response);
-                                        console.log("User Data:", response); // Check the entire userData object
+                                        // console.log("User Data:", response); // Check the entire userData object
                                         localStorage.setItem("email", response.email);
                                         localStorage.setItem("role", response.role);
                                         localStorage.setItem("apiCounter", response.apiCounter);
