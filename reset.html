@@ -37,6 +37,8 @@
             status.innerText = 'Password updated successfully!';
             window.location.href = 'login.html';
           } else {
+            console.log(xhr.responseText.error);
+            
             status.innerText = 'Error updating password.';
           }
         }
